@@ -1,0 +1,58 @@
+\ProvidesPackage{ou-refs}[2026/08/19 v1.0 OU module citations, Harvard-flavoured]
+
+%% Requires biblatex to be loaded FIRST, e.g.
+%%   \usepackage[style=british]{csquotes}
+%%   \usepackage[backend=biber, style=authoryear, dashed=false]{biblatex}
+%%   \addbibresource{ou-refs.bib}
+%%   \usepackage{ou-refs}
+
+\@ifpackageloaded{biblatex}{}{%
+  \PackageError{ou-refs}
+    {biblatex must be loaded before ou-refs}
+    {Put \string\usepackage{...}{biblatex} above \string\usepackage{ou-refs}.}}
+
+%% ---------------------------------------------------------------
+%% 1. Square-bracket parenthetical cite: [M140 Unit 10, ...]
+%%    Same internals as \parencite; only the delimiter differs.
+%% ---------------------------------------------------------------
+\DeclareCiteCommand{\sqcite}[\mkbibbrackets]
+  {\usebibmacro{prenote}}
+  {\usebibmacro{citeindex}%
+   \usebibmacro{cite}}
+  {\multicitedelim}
+  {\usebibmacro{postnote}}
+
+%% ---------------------------------------------------------------
+%% 2. Sugar: \oucite{key}{locator}{pages} -> [M140 Unit 10, Section 4.1, p. 51]
+%%    \mkpageprefix is biblatex's own p./pp. chooser, so ranges, lists
+%%    and roman numerals are all handled natively.
+%%
+%%    The extra braces round \mkpageprefix matter: without them the "]"
+%%    of its [pagination] option closes \sqcite's optional argument early.
+%% ---------------------------------------------------------------
+\NewDocumentCommand{\oucite}{m m m}{%
+  \sqcite[#2, {\mkpageprefix[pagination]{#3}}]{#1}}
+
+%% Locator only, no page: \oucites{key}{Section 2.3}
+\NewDocumentCommand{\oucites}{m m}{\sqcite[#2]{#1}}
+
+%% ---------------------------------------------------------------
+%% 3. Reference-list tweaks towards Cite Them Right (OU Harvard).
+%%    Entries tagged  keywords = {oumodule}  drop the "In:", since
+%%    OU Harvard runs the module title straight on after the unit title.
+%% ---------------------------------------------------------------
+%% Also dropped for journal articles: Harvard writes
+%%   Student (1908) 'The probable error of a mean', Biometrika ...
+%% with no "In:", which is what Mendeley exports will mostly be.
+\renewbibmacro*{in:}{%
+  \ifboolexpr{ test {\ifkeyword{oumodule}} or test {\ifentrytype{article}} }
+    {}
+    {\printtext{\bibstring{in}\intitlepunct}}}
+
+%% Cite Them Right has no full stop after "Author (Year)".
+\renewcommand*{\labelnamepunct}{\addspace}
+
+%% ... and a comma, not a full stop, between unit title and module title.
+\DeclareFieldFormat[incollection]{title}{\mkbibquote{#1\isdot}\addcomma}
+
+\endinput

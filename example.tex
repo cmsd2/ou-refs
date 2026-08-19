@@ -1,0 +1,33 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[style=british]{csquotes}
+\usepackage[backend=biber, style=authoryear, dashed=false]{biblatex}
+
+%% Two bibliographies, and biblatex is happy with that:
+\addbibresource{ou-refs.bib}      % central, from TEXMFHOME  (OU module units)
+\addbibresource{local-refs.bib}   % alongside this .tex      (Mendeley export)
+
+\usepackage{ou-refs}
+
+\begin{document}
+
+\section*{ou-refs smoke test}
+
+OU module material cites by shorthand, in square brackets. The one-sample
+$t$-test statistic is boxed in \oucite{m140:u10}{Section 4.1}{51}, with the
+full procedure at \oucite{m140:u10}{Section 4.1}{54} and the exam-facing
+version in \oucite{m140:hb}{Procedure}{52--53}. The six-test summary table
+is \oucite{m140:u12}{Table 9}{228}.
+
+Displacement is defined as a signed quantity in
+\oucite{mst124:u5}{Section 5.1}{135}. Whole unit, no locator:
+\sqcite{m140:u11}. Two at once: \sqcite{m140:u10,m140:u12}.
+
+Everything from Mendeley keeps ordinary Harvard author--date and round
+brackets: the $t$-test was published by \textcite{gosset1908}, using sleep
+data from \textcite{cushny1905}, reproduced at \oucite{m140:u10}{Table 4}{56}.
+
+\printbibliography[title={References}]
+\printbiblist[title={Abbreviations}]{shorthand}
+
+\end{document}
