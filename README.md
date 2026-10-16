@@ -34,6 +34,25 @@ cd ~/ou-refs && make link && make check
 
 No sudo required — everything lands under `$HOME`.
 
+### On Windows (MiKTeX)
+
+MiKTeX has no `TEXMFHOME`, so `make link` does not apply. `link-windows.ps1`
+does the same job: it registers `$HOME\texmf` as a MiKTeX root and puts
+symlinks in it, one under `tex\latex` for the `.sty` and one under
+`bibtex\bib` for the `.bib`, so `git pull` updates the installed copy.
+Symlinks need Developer Mode (Settings > System > For developers) or an
+elevated shell; without either the script copies the files instead and
+tells you to re-run it after each pull.
+
+```powershell
+git clone https://github.com/cmsd2/ou-refs.git
+cd ou-refs
+.\link-windows.ps1             # -Root D:\texmf to use another root; -Unlink to undo
+```
+
+It ends by printing where `kpsewhich` now finds both files. Re-run it only
+if files are added or renamed; MiKTeX indexes names, not contents.
+
 ## Use
 
 ```latex
