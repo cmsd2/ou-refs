@@ -109,3 +109,9 @@ before submitting.
   12)") because the shorthand occupies the year slot. Use `\sqcite`.
 - `ou-tma.sty` in TEXMFHOME is a separate CTAN package, generated from
   `ou-tma.dtx`. Don't edit it; anything added there is lost on rebuild.
+
+## Licence
+
+[MIT](LICENSE). The unit titles and module details in `ou-refs.bib` are the
+Open University's, recorded as published for citing OU material; the MIT
+licence covers this package's code and documentation.
